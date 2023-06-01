@@ -1,5 +1,5 @@
 "use client"
-
+// update ke github
 import Image from 'next/image'
 import {useState, useEffect} from 'react'
 import $ from 'jQuery'
