@@ -17,11 +17,35 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  font-size: 13px;
+}
+table{
+  width: 100%;
+}
+td, th{
+  padding: 0.7em 1.5em;
+  border-bottom: 1px solid rgb(220,220,220);
+}
+th{
+  padding: 1.2em 1.5em
+}
+table>thead>tr{
+  background: rgb(245,245,245);
+}
+@keyframes show{
+  from{opacity: 0; transform: translate(-20em, 0)}
+  to{opacity: 1; transform: translate(-21em, 0)}
+}
+.comphov > div{
+  z-index: -2;
+  opacity: 0;
+  transform: translate(-21em, 0)
+}
+.comphov:hover > div{
+  z-index: 1;
+  opacity: 1;
+  animation: show 0.5s ease;
+}
+.comphov:hover{
+  cursor: pointer
 }

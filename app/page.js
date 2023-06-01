@@ -1,112 +1,155 @@
+"use client"
+
 import Image from 'next/image'
+import {useState, useEffect} from 'react'
+import $ from 'jQuery'
+import _ from 'lodash'
 
 export default function Home() {
+  const [listData, setListData] = useState([])
+  const [listPart, setListPart] = useState([])
+  const [listEvalCode, setListEvalCode] = useState(['Normal', 'Caution', 'Critical', 'Severe'])
+  const [listUnit, setListUnit] = useState([])
+  const [listConvertedData, setListConvertedData] = useState([])
+  const processData = listData => {
+    // set list part dan unit
+    let listPart = _.uniq(_.map(listData, 'COMPONENT'))
+    let listUnit = _.uniq(_.map(listData, 'SERIAL_NO'))
+    setListPart(listPart)
+    setListUnit(listUnit)
+    // convert data by list unit
+    let convertedData = listUnit.map(unit => {
+      // create list part info
+      let dataPart = listPart.map(part => {
+        let allData = listData.filter(data => data.SERIAL_NO == unit && data.COMPONENT == part)
+        // sort list report by date , ambil hanya 5 terakhir
+        allData = allData.length ? allData.sort((a,b) => new Date(b.updatedate) > new Date(a.updatedate) ? 1 : -1) : false
+        return {
+          partName: part,
+          lastStatus: allData ? allData[0] : 0, 
+          allData: allData ? allData.splice(0,5) : [],
+        }
+      })
+      // filter hanya equipment yang memiliki data
+      dataPart = dataPart.filter(it => it.allData.length)
+      // convert overall status jadi angka
+      let overAllStatus = [...dataPart].map(it => it.lastStatus.EVAL_CODE)
+      let highestStatus = [...overAllStatus].map(it => it == 'N' ? 1 : it == 'B' ? 2 : it == 'C' ? 3 : 4)
+      return {
+        unit,
+        overAllStatus,
+        highestStatus : highestStatus.sort((a, b) => b > a ? 1 : -1)[0],
+        dataPart
+      }
+    })
+    console.log(convertedData)
+    setListConvertedData(convertedData)
+  }
+  useEffect(() => {
+    $.ajax({
+      url : `https://ut.petrolab.co.id/api/report/last-update?limit=true&page=1&order_by=RECV_DT1 DESC&data_per_age=50&days=7`,
+      method: 'GET',
+      beforeSend: function(xhr){
+        xhr.setRequestHeader("Authorization", `Bearer KjVNJHkIfefaJnkrVZ8J_SUlG6rZo0Om`)
+      },
+      success: data => {
+        setListData(data.data)
+      }
+    })
+  }, [])
+  useEffect(() => {
+    processData(listData)
+  }, [listData])
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main>
+      <div className="flex justify-between items-center px-10 py-6 bg-slate-50">
+        <div className="mb-1">
+          <h1 className="text-2xl text-slate-600 font-semibold mb-1"><i className="fa-solid mr-2 fa-file-waveform"></i>  Summary Data</h1>
+          <p className="text-sky-700 bg-sky-100 mt-1 p-1 px-2 inline-block rounded"><i className="fa-solid fa-circle-info"></i> Menampilkan Total <strong>{listData.length}</strong> report, <strong>{listPart.length}</strong> Part, dan <strong>{listUnit.length}</strong> Unit</p>
+        </div>
+        <div className="flex gap-5">
+          <img src="/ut.png" width="50" />
+          <img src="/ppa.png" width="50" />
         </div>
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+      {/* tabel */}
+      <div >
+        <table>
+          <thead className="top-0 sticky z-[1000]">
+            <tr>
+              <th>Status</th>
+              <th>Unit Code</th>
+              <th>Component</th>
+              <th>Lab Number (Last) </th>
+              <th>Update Date (Last) </th>
+              <th>Condition (Last 5) </th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              listConvertedData.map((it, index) => (
+                <tr key={index}>
+                  <td className="text-center">
+                    <span className={`py-1 px-2 text-white rounded text-sm ${
+                      it.highestStatus == 1 ? 'bg-emerald-700' :
+                      it.highestStatus == 2 ? 'bg-orange-500' : 
+                      it.highestStatus == 3 ? 'bg-rose-400' : 'bg-rose-700' 
+                    }`}>{listEvalCode[it.highestStatus - 1]}</span>
+                  </td>
+                  <td className="text-center text-lg w-[10em]">{it.unit}</td>
+                  {/* column component */}
+                  <td className="py-2 w-[20em] relative">
+                    {
+                      it.dataPart.map((data, index) => (
+                        <>
+                          <p className={`comphov py-1 my-[0.1em] mx-1`} key={index}>
+                            <span className={`py-1 px-2 text-white rounded text-sm ${
+                              it.overAllStatus[index] == 'N' ? 'bg-emerald-700' :
+                              it.overAllStatus[index] == 'B' ? 'bg-orange-500' : 
+                              it.overAllStatus[index] == 'C' ? 'bg-rose-400' : 'bg-rose-700' 
+                            }`}>{data.partName}</span>
+                            <div className="absolute p-2 px-3 backdrop-blur-lg bg-[rgba(255,255,255,0.3)] border border-slate-200 shadow-sm rounded top-3 w-[20em]">
+                              <p className="mb-3"><span className="block font-semibold text-sky-600">
+                                <i className="fa-regular fa-clipboard mr-1"></i> Rekomendasi 1</span><span className="text-slate-500 text-xs">{data.lastStatus.RECOMM1}</span></p>
+                              <p><span className="block font-semibold text-sky-600">
+                                <i className="fa-regular fa-clipboard mr-1"></i> Rekomendasi 2</span><span className="text-slate-500 text-xs">{data.lastStatus.RECOMM2}</span></p>
+                            </div>
+                          </p>
+                        </>
+                      ))
+                    }
+                  </td>
+                  {/* column lab number */}
+                  <td className="text-center">
+                    {
+                      it.dataPart.map((data, index) => (
+                        <p className={`py-1 my-[0.1em] mx-1`} key={index}>{data.lastStatus.Lab_No}</p>
+                      ))
+                    }
+                  </td>
+                  {/* column last update */}
+                  <td className="text-center">
+                    {
+                      it.dataPart.map((data, index) => (
+                        <p className={`py-1 my-[0.1em] mx-1`} key={index}>{data.lastStatus.updatedate}</p>
+                      ))
+                    }
+                  </td>
+                  {/* column last 5 condition */}
+                  <td className="text-center">
+                    {
+                      it.dataPart.map((data, index) => (
+                        <p className={`py-1 my-[0.1em] mx-1`} key={index}>{data.allData.map((last, index) => (
+                          <span title={`Update date : ${last.updatedate}`} key={index}>{last.EVAL_CODE}</span>
+                        ))}</p>
+                      ))
+                    }
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
       </div>
     </main>
   )
