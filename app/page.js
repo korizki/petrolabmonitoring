@@ -2,7 +2,7 @@
 // update ke github
 import Image from 'next/image'
 import {useState, useEffect} from 'react'
-import $ from 'jQuery'
+import $ from 'jquery'
 import _ from 'lodash'
 
 export default function Home() {
