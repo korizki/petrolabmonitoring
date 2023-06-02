@@ -108,7 +108,7 @@ export default function Home() {
                               it.overAllStatus[index] == 'B' ? 'bg-orange-500' : 
                               it.overAllStatus[index] == 'C' ? 'bg-rose-400' : 'bg-rose-700' 
                             }`}>{data.partName}</span>
-                            <div className="absolute p-2 px-3 backdrop-blur-lg bg-[rgba(255,255,255,0.3)] border border-slate-200 shadow-sm rounded top-3 w-[20em]">
+                            <div className="absolute p-2 px-3 backdrop-blur-lg bg-[rgba(255,255,255,0.3)] border border-slate-200 shadow-sm rounded top-[0] w-[20em]">
                               <p className="mb-3"><span className="block font-semibold text-sky-600">
                                 <i className="fa-regular fa-clipboard mr-1"></i> Rekomendasi 1</span><span className="text-slate-500 text-xs">{data.lastStatus.RECOMM1}</span></p>
                               <p><span className="block font-semibold text-sky-600">

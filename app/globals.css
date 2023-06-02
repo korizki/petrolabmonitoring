@@ -36,6 +36,9 @@ table>thead>tr{
   from{opacity: 0; transform: translate(-20em, 0)}
   to{opacity: 1; transform: translate(-21em, 0)}
 }
+.comphov{
+  position: relative;
+}
 .comphov > div{
   z-index: -2;
   opacity: 0;
