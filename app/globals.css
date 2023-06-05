@@ -17,24 +17,39 @@
 }
 
 body {
-  font-size: 13px;
+  font-size: 12px;
+}
+span{
+  font-size: 1em;
 }
 table{
   width: 100%;
 }
 td, th{
-  padding: 0.7em 1.5em;
+  padding: 0.7em;
+  max-width: 5em;
   border-bottom: 1px solid rgb(220,220,220);
+  text-align: center;
+}
+td:nth-child(9){
+  max-width: 18em;
+  text-align: left;
+}
+td:nth-child(4){
+  max-width: 7em;
+}
+td:nth-child(5), th:nth-child(5), td:nth-child(6), th:nth-child(6), td:nth-child(10), th:nth-child(10), td:nth-child(11), th:nth-child(11), td:nth-child(1), th:nth-child(1){
+  max-width: 3em;
 }
 th{
-  padding: 1.2em 1.5em
+  padding: 1.2em
 }
 table>thead>tr{
   background: rgb(245,245,245);
 }
 @keyframes show{
-  from{opacity: 0; transform: translate(-20em, 0)}
-  to{opacity: 1; transform: translate(-21em, 0)}
+  from{opacity: 0; transform: translate(-21em, -2em)}
+  to{opacity: 1; transform: translate(-20.1em, -2em)}
 }
 .comphov{
   position: relative;
@@ -42,10 +57,10 @@ table>thead>tr{
 .comphov > div{
   z-index: -2;
   opacity: 0;
-  transform: translate(-21em, 0)
+  transform: translate(-20.1em, -2em)
 }
 .comphov:hover > div{
-  z-index: 1;
+  z-index: 10000;
   opacity: 1;
   animation: show 0.5s ease;
 }
