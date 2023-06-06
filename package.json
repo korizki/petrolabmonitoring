@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "autoprefixer": "10.4.14",
+    "chart.js": "^4.3.0",
     "jquery": "^3.7.0",
     "lodash": "^4.17.21",
     "next": "13.4.4",
