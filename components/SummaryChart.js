@@ -17,27 +17,37 @@ export default function SummaryChart(props){
                 className={`p-2 rounded-md border-slate-200 
                 ${filterBy == 'All' ? 'bg-sky-500 text-white font-semibold' : 'bg-slate-100'}`} 
                 onClick={() => setFilterBy('All')}
-                >All</button>
+                >All 
+                    {filterBy == 'All' && (<i className="fas fa-check-circle"></i>)}
+              </button>
               <button 
                 className={`p-2 rounded-md border-slate-200
                 ${filterBy == 'Normal' ? 'bg-emerald-600 text-white font-semibold' : 'bg-slate-100'}`} 
                 onClick={() => setFilterBy('Normal')}
-                >Normal</button>
+                >Normal 
+                    {filterBy == 'Normal' && (<i className="fas fa-check-circle"></i>)}
+              </button>
               <button 
                 className={`p-2 rounded-md border-slate-200
                 ${filterBy == 'Caution' ? 'bg-orange-400 text-white font-semibold' : 'bg-slate-100'}`} 
                 onClick={() => setFilterBy('Caution')}
-                >Caution</button>
+                >Caution 
+                    {filterBy == 'Caution' && (<i className="fas fa-check-circle"></i>)}
+              </button>
               <button 
                 className={`p-2 rounded-md border-slate-200
                 ${filterBy == 'Critical' ? 'bg-rose-400 text-white font-semibold' : 'bg-slate-100'}`} 
                 onClick={() => setFilterBy('Critical')}
-                >Critical</button>
+                >Critical 
+                    {filterBy == 'Critical' && (<i className="fas fa-check-circle"></i>)}
+              </button>
               <button 
                 className={`p-2 rounded-md border-slate-200
                 ${filterBy == 'Severe' ? 'bg-rose-700 text-white font-semibold' : 'bg-slate-100'}`} 
                 onClick={() => setFilterBy('Severe')}
-              >Severe</button>
+              >Severe 
+                {filterBy == 'Severe' && (<i className="fas fa-check-circle"></i>)}
+              </button>
               {/* info total unit */}
               <div className="text-right mt-5">
                 <p className="text-slate-500 text-[1.2em]">Total Unit : <strong>{filterBy}</strong></p>
@@ -46,7 +56,7 @@ export default function SummaryChart(props){
             </div>
           </div>
         </div>
-        <div className="bg-white border-slate-500 flex-1 rounded-md mb-5">
+        <div className="bg-white border-slate-500 flex-1 rounded mb-8 shadow-sm shows">
           <h1 className='text-lg p-3 bg-sky-600 rounded-tl-md rounded-tr-md text-white'><i className="mx-2 fas fa-chart-pie"></i> Component Summary </h1>
         </div>
       </div>

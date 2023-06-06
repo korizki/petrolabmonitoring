@@ -60,6 +60,10 @@ table>thead>tr{
 .shows{
   animation: showup 1s ease;
 }
+.fa-check-circle{
+  animation: showup 0.3s ease;
+  margin-left: 0.5em;
+}
 .comphov{
   position: relative;
 }
