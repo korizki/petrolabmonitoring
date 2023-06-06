@@ -4,7 +4,6 @@ import $ from 'jquery'
 
 export default function ChartEl(props) {
     const { elName, chartProp } = props
-    console.log(elName, chartProp)
     useEffect(() => {
         if(chartProp !== null){
             // remove and re-create element

@@ -14,8 +14,10 @@ export default function Home() {
   const [listEvalCode, setListEvalCode] = useState(['Normal', 'Caution', 'Critical', 'Severe'])
   const [listUnit, setListUnit] = useState([])
   const [listDataStorage, setListDataStorage] = useState([])
+  const [listDataForChartComponent, setListDataForChartComponent] = useState([])
   const [listDisplayedData, setListDisplayedData] = useState([])
   const [overallChartConfig, setOverAllChartConfig] = useState(null)
+  const [chartConfigByComponent, setChartConfigByComponent] = useState(null)
   const [filterBy, setFilterBy] = useState('All')
   // reformat data
   const processData = listData => {
@@ -79,7 +81,10 @@ export default function Home() {
           {
             label: 'Pencapaian',
             data: listConvertedData.map(it => it.value),
-            backgroundColor: ['rgb(27, 156, 133)','rgb(255, 184, 76)','rgb(255, 105, 105)','rgb(183, 4, 4)' ]
+            backgroundColor: listConvertedData.map(it => it.status == 'Normal' ? 'rgb(27, 156, 133)' : 
+            it.status == 'Caution' ? 'rgb(255, 184, 76)' :
+            it.status == 'Critical' ? 'rgb(255, 105, 105)' : 'rgb(183, 4, 4)'
+          )
           }
         ]
       },
@@ -89,10 +94,48 @@ export default function Home() {
     }
     setOverAllChartConfig(chartConfig)
   }
+  // create chart config for pie chart by component
+  const createChartConfigComponent = data => {
+    let newArrData = []
+    data.forEach(it => it.dataPart.forEach(data => data.allData.forEach(rep => newArrData.push(rep))))
+    // create new format
+    let listStatus = _.uniq(_.map([...newArrData], 'EVAL_CODE'))
+    listStatus = listStatus.map(it => {
+      let filtered = newArrData.filter(data => data.EVAL_CODE == it)
+      return {
+        status: it,
+        value: filtered.length
+      }
+    })
+    // create chart
+    setChartConfigByComponent({
+      type: 'pie',
+      data: {
+        labels: listStatus.map(it => it.status == 'N' ? 'Normal' :
+          it.status == 'B' ? 'Caution' : 
+          it.status == 'C' ? 'Critical' : 'Severe' 
+        ),
+        datasets: [
+          {
+            label: 'Pencapaian',
+            data: _.map(listStatus, 'value'),
+            backgroundColor: listStatus.map(it => it.status == 'N' ? 'rgb(27, 156, 133)' : 
+              it.status == 'B' ? 'rgb(255, 184, 76)' :
+              it.status == 'C' ? 'rgb(255, 105, 105)' : 'rgb(183, 4, 4)'
+            )
+          }
+        ]
+      },
+      options: {
+        responsive: true
+      }
+    })
+  }
   // update data preview with filter
   useEffect(() => {
     let listData = listDataStorage
     let sortIndex = 0
+    // filter by overall status
     if(filterBy == 'Normal') {
       sortIndex = 1 
     } else if(filterBy == 'Caution') {
@@ -103,12 +146,31 @@ export default function Home() {
       sortIndex = 4
     }
     listData = filterBy != 'All' ? listData.filter(it => it.highestStatus == sortIndex) : listDataStorage
+    // jika filter by component status
+    const filterByComponent = (data, code) => {
+      let filteredUnit = data.filter(unit => {
+        // filter berdasarkan status komponen terakhir
+        let filteredByStatus = unit.dataPart.filter(it => it.allData[0].EVAL_CODE == code)
+        return filteredByStatus.length ? true : false 
+      })
+      return filteredUnit
+    }
+    if(filterBy == 'componentNormal'){
+      listData = filterByComponent(listDataStorage, 'N')
+    } else if(filterBy == 'componentCaution'){
+      listData = filterByComponent(listDataStorage, 'B')
+    } else if(filterBy == 'componentCritical'){
+      listData = filterByComponent(listDataStorage, 'C')
+    } else if(filterBy == 'componentSevere'){
+      listData = filterByComponent(listDataStorage, 'D')
+    } 
     // tampilkan data setelah di filter by overall status
     setListDisplayedData(listData)
   }, [listDataStorage, filterBy])
   // show pie chart
   useEffect(() => {
     createChartConfig(listDataStorage)
+    createChartConfigComponent(listDataStorage)
   }, [listDataStorage])
   // get data from endpoint on first load
   useEffect(() => {
@@ -150,6 +212,8 @@ export default function Home() {
       <SummaryChart 
         listDataStorage={listDataStorage} 
         overallChartConfig={overallChartConfig}
+        chartConfigByComponent={chartConfigByComponent}
+        listDataForChartComponent={listDataForChartComponent}
         filterBy={filterBy} 
         listDisplayedData={listDisplayedData}
         setFilterBy={setFilterBy}
