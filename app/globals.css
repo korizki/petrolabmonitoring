@@ -59,9 +59,21 @@ table>thead>tr{
 }
 .actform button{
   outline: 1px solid rgb(220,220,220);
+  transition: all 0.3s;
+}
+.actform button:hover{
+  background: rgb(220,220,220);
 }
 .shows{
   animation: showup 1s ease;
+}
+.boxchart{
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.boxchart:hover{
+  transform: translateY(-0.4em);
+  box-shadow: 2px 2px 4px 0 rgb(240,240,240);
 }
 .fa-check-circle{
   animation: showup 0.3s ease;

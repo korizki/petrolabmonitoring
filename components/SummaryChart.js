@@ -5,16 +5,16 @@ export default function SummaryChart(props){
     const { listDataStorage, overallChartConfig, filterBy, listDisplayedData, setFilterBy, chartConfigByComponent } = props
     return (
       <div className="flex gap-10 bg-slate-50 justify-center px-10">
-        <div className="bg-white border-slate-500 flex-1 rounded mb-8 shadow-sm shows">
-          <h1 className='text-lg p-3 bg-sky-600 rounded-tl-lg rounded-tr-lg text-white'><i className="mx-2 fas fa-chart-pie"></i> Overall Status Summary </h1>
+        <div className="bg-white border-slate-500 flex-1 rounded-xl mb-8 shadow-sm shows boxchart">
+          <h1 className='text-lg p-3 bg-sky-600 rounded-tl-xl rounded-tr-xl text-white'><i className="mx-2 fas fa-chart-pie"></i> Overall Status Summary </h1>
           <div className="p-2 flex gap-2 items-start">
             <div className="w-[70%] m-auto py-4 ">
               <ChartEl elName='chartoverall' chartProp={overallChartConfig} />
             </div>
           </div>
         </div>
-        <div className="bg-white border-slate-500 flex-1 rounded mb-8 shadow-sm shows">
-          <h1 className='text-lg p-3 bg-sky-600 rounded-tl-md rounded-tr-md text-white'><i className="mx-2 fas fa-chart-pie"></i> Component Summary </h1>
+        <div className="bg-white border-slate-500 flex-1 rounded-xl mb-8 shadow-sm shows boxchart">
+          <h1 className='text-lg p-3 bg-sky-600 rounded-tl-xl rounded-tr-xl text-white'><i className="mx-2 fas fa-chart-pie"></i> Component Summary </h1>
           <div className="p-2 flex gap-2 items-start">
             <div className="w-[70%] m-auto py-4 ">
               <ChartEl elName='chartcomponent' chartProp={chartConfigByComponent} />
