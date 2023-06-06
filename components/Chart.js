@@ -21,3 +21,4 @@ export default function ChartEl(props) {
         </div>
     )
 }
+// update repo rizki

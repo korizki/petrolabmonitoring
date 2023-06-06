@@ -157,27 +157,27 @@ export default function Home() {
               <p className="text-slate-500">Filter by status</p>
               <button 
                 className={`p-2 rounded-md border-slate-200 
-                ${filterBy == 'All' ? 'bg-sky-500 text-white' : 'bg-slate-100'}`} 
+                ${filterBy == 'All' ? 'bg-sky-500 text-white font-semibold' : 'bg-slate-100'}`} 
                 onClick={() => setFilterBy('All')}
                 >All</button>
               <button 
                 className={`p-2 rounded-md border-slate-200
-                ${filterBy == 'Normal' ? 'bg-emerald-600 text-white' : 'bg-slate-100'}`} 
+                ${filterBy == 'Normal' ? 'bg-emerald-600 text-white font-semibold' : 'bg-slate-100'}`} 
                 onClick={() => setFilterBy('Normal')}
                 >Normal</button>
               <button 
                 className={`p-2 rounded-md border-slate-200
-                ${filterBy == 'Caution' ? 'bg-orange-400 text-white' : 'bg-slate-100'}`} 
+                ${filterBy == 'Caution' ? 'bg-orange-400 text-white font-semibold' : 'bg-slate-100'}`} 
                 onClick={() => setFilterBy('Caution')}
                 >Caution</button>
               <button 
                 className={`p-2 rounded-md border-slate-200
-                ${filterBy == 'Critical' ? 'bg-rose-400 text-white' : 'bg-slate-100'}`} 
+                ${filterBy == 'Critical' ? 'bg-rose-400 text-white font-semibold' : 'bg-slate-100'}`} 
                 onClick={() => setFilterBy('Critical')}
                 >Critical</button>
               <button 
                 className={`p-2 rounded-md border-slate-200
-                ${filterBy == 'Severe' ? 'bg-rose-700 text-white' : 'bg-slate-100'}`} 
+                ${filterBy == 'Severe' ? 'bg-rose-700 text-white font-semibold' : 'bg-slate-100'}`} 
                 onClick={() => setFilterBy('Severe')}
               >Severe</button>
               {/* info total unit */}
