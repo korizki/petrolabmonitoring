@@ -1,6 +1,7 @@
 export default function MainTable(props){
     const {listDisplayedData, listEvalCode} = props
     return (
+        // menambahkan komentar untuk push ke repo public
         <>
             <table>
             <thead className="top-0 sticky z-[1000]">
