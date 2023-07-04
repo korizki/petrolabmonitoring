@@ -27,10 +27,13 @@ span{
 table{
   width: 100%;
 }
+i{
+  margin-right: 0.4em;
+}
 td, th{
-  padding: 0.7em;
+  padding: 0 0.7em;
   max-width: 5em;
-  border-bottom: 1px solid rgb(220,220,220);
+  border-bottom: 3px solid rgb(230,230,230);
   text-align: center;
 }
 td:nth-child(9){
@@ -42,6 +45,12 @@ td:nth-child(4){
 }
 td:nth-child(5), th:nth-child(5), td:nth-child(6), th:nth-child(6), td:nth-child(10), th:nth-child(10), td:nth-child(11), th:nth-child(11), td:nth-child(1), th:nth-child(1){
   max-width: 3em;
+}
+td:nth-child(4), th:nth-child(4){
+  max-width: 5em;
+}
+td:nth-child(5), td:nth-child(6), td:nth-child(7), td:nth-child(8), td:nth-child(10), td:nth-child(11){
+  padding: 0;
 }
 th{
   padding: 1.2em
