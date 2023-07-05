@@ -201,7 +201,7 @@ export default function Home() {
     <main>
       <div className="flex justify-between items-center px-10 py-6 bg-slate-50">
         <div className="mb-1">
-          <h1 className="text-2xl text-slate-600 font-semibold mb-1"><i className="fa-solid mr-2 fa-file-waveform"></i>  Summary Data</h1>
+          <h1 className="text-2xl text-slate-600 font-semibold mb-1"><i className="fa-solid mr-2 fa-file-waveform"></i>  Oil Sample Report - Petrolab</h1>
           <p className="text-sky-700 bg-sky-100 mt-1 p-1 px-2 inline-block rounded"><i className="fa-solid fa-circle-info"></i> Menampilkan Total <strong>{listData.length}</strong> report, <strong>{listPart.length}</strong> Part, dan <strong>{listUnit.length}</strong> Unit</p>
         </div>
         <div className="flex gap-5">
