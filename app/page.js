@@ -196,6 +196,7 @@ export default function Home() {
   // on update listdata continue process to new format
   useEffect(() => {
     processData(listData)
+    // push to netlify repo
   }, [listData])
   return (
     <main>
